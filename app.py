@@ -6,11 +6,6 @@ db = client.ContractorProject
 users = db.users
 donations = db.donations
 
-users = [
-    { 'username': 'taymitsu', 'password': 'creamofwheatrox'},
-    { 'username': 'phiggy', 'password': 'Daximoon'}
-]
-
 app = Flask(__name__)
 
 @app.route('/')
@@ -39,13 +34,13 @@ def donations_new():
 def donations_submit():
     """Submit Donation Record"""
     donation = {
-        'name': request.form.get(),
-        'amount': request.form.get('donation'),
+        'charity': request.form.get('charity'),
         'date': request.form.get('date'),
+        'amount': request.form.get('amount'),
         'notes': request.form.get('notes'),
     }
-    print(request.form.to_dict())
-    return redirect(url_for('donations_index'))
+    donations.insert_one(donation)
+    #return redirect(url_for('donations_index'))
 
 if __name__ == '__main__':
     app.run(debug = True)
