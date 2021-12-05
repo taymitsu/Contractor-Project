@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 
 client = MongoClient()
@@ -24,8 +24,22 @@ def home():
 
 #----------------SHOW----------------
 @app.route('/donations')
-def donation_index():
+def donations_index():
+    """SHOW Donation Log"""
     return render_template('donations_index.html', donations=donations.find())
+
+#----------------NEW/CREATE-----------
+@app.route('/donations/new')
+def donations_new():
+    """Create NEW Donation Log"""
+    return render_template('donations_new.html')
+
+#SUBMIT NEW 
+@app.route('/donations', methods=['POST'])
+def donations_submit():
+    """Submit Donation Record"""
+    print(request.form.to_dict())
+    return redirect(url_for('donations_index'))
 
 if __name__ == '__main__':
     app.run(debug = True)

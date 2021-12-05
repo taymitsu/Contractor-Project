@@ -1,0 +1,31 @@
+{% extend 'base.html' %}
+
+{% block content %}
+<form method='POST' action='/donations'>
+    <fieldset>
+    <legend>Add Donation</legend>
+    <!-- INFORMATION -->
+    <p>
+        <label for='charity'>Name of Charity</label><br>
+        <input type='text' name='charity' />
+    </p>
+    <p>
+        <label for='date'>Date Created</label><br>
+        <input type='text' name='date' />
+    </p>
+    <p>
+        <label for='amount'>Amount Donated</label><br>
+        <input type='number' name='amount' />
+    </p>
+    <p>
+        <label for='notes'>Additional Notes</label><br>
+        <input type='text' name='notes' />
+    </p>
+    </fieldset>
+
+    <!-- BUTTON -->
+    <p>
+        <button type='submit'>Save Donation</button>
+    </p>
+</form>
+{% endblock %}
