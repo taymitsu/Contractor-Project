@@ -42,6 +42,7 @@ def donations_submit():
         'name': request.form.get(),
         'amount': request.form.get('donation'),
         'date': request.form.get('date'),
+        'notes': request.form.get('notes'),
     }
     print(request.form.to_dict())
     return redirect(url_for('donations_index'))
