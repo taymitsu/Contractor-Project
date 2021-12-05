@@ -38,6 +38,11 @@ def donations_new():
 @app.route('/donations', methods=['POST'])
 def donations_submit():
     """Submit Donation Record"""
+    donation = {
+        'name': request.form.get(),
+        'amount': request.form.get('donation'),
+        'date': request.form.get('date'),
+    }
     print(request.form.to_dict())
     return redirect(url_for('donations_index'))
 
