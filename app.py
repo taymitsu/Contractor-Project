@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+import datetime
 
 client = MongoClient()
 db = client.ContractorProject
-users = db.users
+
 donations = db.donations
 
 app = Flask(__name__)
@@ -21,6 +22,19 @@ def donations_new():
     """Create NEW Donation Log"""
     return render_template('donations_new.html')
 
+#----------------SUBMIT(Submit New/above)-----------
+@app.route('/donations', methods=['POST'])
+def donations_submit():
+    """Submit NEW Donation Record"""
+    donation = {
+        'charity': request.form.get('charity'),
+        'date': datetime.datetime.now(),
+        'amount': request.form.get('amount'),
+        'notes': request.form.get('notes'),
+    }
+    donations.insert_one(donation)
+    return redirect(url_for('donations_index'))
+
 #----------------DISPLAY ONE-----------
 @app.route('/donations/<donation_id>')
 def donations_show(donation_id):
@@ -28,17 +42,11 @@ def donations_show(donation_id):
     donation = donations.find_one({'_id': ObjectId(donation_id)})
     return render_template('donations_show.html', donation=donation)
 
-#----------------SUBMIT ONE-----------
-@app.route('/donations', methods=['POST'])
-def donations_submit():
-    """Submit Donation Record"""
-    donation = {
-        'charity': request.form.get('charity'),
-        'date': request.form.get('date'),
-        'amount': request.form.get('amount'),
-        'notes': request.form.get('notes'),
-    }
-    donations.insert_one(donation)
+#----------------DELETE-----------
+@app.route('/donations/<donation_id>/delete', methods=['POST'])
+def donations_delete(donation_id):
+    """Delete ONE Donation Log"""
+    donations.delete_one({'_id': ObjectId(donation_id)})
     return redirect(url_for('donations_index'))
 
 #----------------EDIT-----------
@@ -49,21 +57,13 @@ def donations_edit(donation_id):
     #redirect to Show/DISPLAY ONE 
     return render_template('donations_show.html', donation=donation, title='Edit Donation Record')
 
-
-#----------------DELETE-----------
-@app.route('/donations/<donation_id>/delete', methods=['POST'])
-def donations_delete(donation_id):
-    """Delete ONE Donation Log"""
-    donations.delete_one({'_id': ObjectId(donation_id)})
-    return redirect(url_for('donations_index'))
-
-#---------------- UPDATE-----------
+#---------------- UPDATE(Submit Edit/above)-----------
 @app.route('donations/<donation_id>/', methods=['POST'])
 def donations_update(donation_id):
-    """Update Donation Log"""
+    """Submit Edit"""
     updated_donation = {
         'charity': request.form.get('charity'),
-        'date': request.form.get('date'),
+        'date': datetime.datetime.now(),
         'amount': request.form.get('amount'),
         'notes': request.form.get('notes'),
     }
