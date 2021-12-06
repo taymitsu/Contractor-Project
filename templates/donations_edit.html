@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method='POST' action='/donations'>
+
+<form method='POST' action='/donations/{{donation._id}}'>
     <!-- Add this line instead of all the form code -->
-    {% include 'partials/playlists_form.html' %}
+    {% include 'partials/donations_form.html' %}
+    <p><button type='submit'>Update</button></p>
 </form>
+
 {% endblock %}

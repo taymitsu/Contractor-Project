@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <a href = '/'> Back to Home </a>
+
     <h3>Donor Name</h3>
     <p>{{ donation.donor }}</p>
     <h3>Name of Charity</h3>
@@ -12,9 +14,11 @@
     <h3>Additional notes </h3>
     <p>{{ donation.notes }}</p>
 
-    <p><form action="/donations/{{ donation_id }}/delete">
-    <button type="submit">Remove From Donation Log</button>
+    <p><form method='POST' action="/donations/{{ donation._id }}/delete">
+        <button type="submit">Remove From Donation Log</button>
     </form></p>
-    
+
+    <p><a href="/donations/{{ donation._id }}/edit"><button type='submit'>Edit</button></a></p>
+
 {% endfor %}
 {% endblock %}

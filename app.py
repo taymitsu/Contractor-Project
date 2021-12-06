@@ -42,9 +42,13 @@ def donations_submit():
     return redirect(url_for('donations_index'))
 
 #----------------EDIT-----------
-@app.route('/donations/<donation_id>', methods=['POST'])
+@app.route('/donations/<donation_id>/edit')
 def donations_edit(donation_id):
     """Submit Edit"""
+    donation = donations.find_one({'id': ObjectId(donation_id)})
+    #redirect to Show/DISPLAY ONE 
+    return render_template('donations_show.html', donation=donation, title='Edit Donation Record')
+
 
 #----------------DELETE-----------
 @app.route('/donations/<donation_id>/delete', methods=['POST'])
@@ -54,5 +58,21 @@ def donations_delete(donation_id):
     return redirect(url_for('donations_index'))
 
 #---------------- UPDATE-----------
+@app.route('donations/<donation_id>/', methods=['POST'])
+def donations_update(donation_id):
+    """Update Donation Log"""
+    updated_donation = {
+        'charity': request.form.get('charity'),
+        'date': request.form.get('date'),
+        'amount': request.form.get('amount'),
+        'notes': request.form.get('notes'),
+    }
+    #Redirect to newly updated
+    donations.update_one(
+        {'id': ObjectId(donation_id)},
+        {'$set': updated_donation})
+    #redirect to Show/DISPLAY ONE 
+    return redirect(url_for('donations_show', donation_id=donation_id))
+
 if __name__ == '__main__':
     app.run(debug = True)
