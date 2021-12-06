@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>Donor Name</h3>
+    <p>{{ donation.donor }}</p>
+    <h3>Name of Charity</h3>
+    <p>{{ donation.charity }}</p>
+    <h3>Date</h3>
+    <p>{{ donation.date }}</p>
+    <h3>Amount Donated</h3>
+    <p>{{ donation.amount }}</p>
+    <h3>Additional notes </h3>
+    <p>{{ donation.notes }}</p>
+
+    <p><a href=''>Edit</a></p>
+    <p><a href=''>Delete</a></p>
+{% endfor %}
+{% endblock %}

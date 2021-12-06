@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 client = MongoClient()
 db = client.ContractorProject
@@ -8,19 +9,10 @@ donations = db.donations
 
 app = Flask(__name__)
 
+#----------------INDEX ALL DONATIONS-----------
 @app.route('/')
-def index():
-    return render_template('index.html')
-
-#----------------HOME----------------
-@app.route('/home')
-def home():
-    return render_template('home.html')
-
-#----------------SHOW----------------
-@app.route('/donations')
 def donations_index():
-    """SHOW Donation Log"""
+    """SHOW ALL DONATIONS"""
     return render_template('donations_index.html', donations=donations.find())
 
 #----------------NEW/CREATE-----------
@@ -29,7 +21,14 @@ def donations_new():
     """Create NEW Donation Log"""
     return render_template('donations_new.html')
 
-#SUBMIT NEW 
+#----------------DISPLAY ONE-----------
+@app.route('/donations/<donation_id>')
+def donations_show(donations_id):
+    """DISPLAY ONE"""
+    donation = donations.find_one({'_id': ObjectId(donation_id)})
+    return render_template('donations_show.html', donation=donation)
+
+#----------------SUBMIT ONE-----------
 @app.route('/donations', methods=['POST'])
 def donations_submit():
     """Submit Donation Record"""
@@ -40,7 +39,16 @@ def donations_submit():
         'notes': request.form.get('notes'),
     }
     donations.insert_one(donation)
-    #return redirect(url_for('donations_index'))
+    return redirect(url_for('donations_index'))
 
+#----------------EDIT-----------
+@app.route('/donations/<donation_id>', methods=['POST'])
+def donations_edit(donation_id):
+    """Submit Edit"""
+
+#----------------DELETE-----------
+
+
+#---------------- UPDATE-----------
 if __name__ == '__main__':
     app.run(debug = True)

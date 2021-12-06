@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method='POST' action='/donations'>
+    <!-- Add this line instead of all the form code -->
+    {% include 'partials/playlists_form.html' %}
+</form>
+{% endblock %}
