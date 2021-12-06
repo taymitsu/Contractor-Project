@@ -12,7 +12,9 @@
     <h3>Additional notes </h3>
     <p>{{ donation.notes }}</p>
 
-    <p><a href=''>Edit</a></p>
-    <p><a href=''>Delete</a></p>
+    <p><form action="/donations/{{ donation_id }}/delete">
+    <button type="submit">Remove From Donation Log</button>
+    </form></p>
+    
 {% endfor %}
 {% endblock %}

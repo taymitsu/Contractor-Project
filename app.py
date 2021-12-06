@@ -23,7 +23,7 @@ def donations_new():
 
 #----------------DISPLAY ONE-----------
 @app.route('/donations/<donation_id>')
-def donations_show(donations_id):
+def donations_show(donation_id):
     """DISPLAY ONE"""
     donation = donations.find_one({'_id': ObjectId(donation_id)})
     return render_template('donations_show.html', donation=donation)
@@ -47,7 +47,11 @@ def donations_edit(donation_id):
     """Submit Edit"""
 
 #----------------DELETE-----------
-
+@app.route('/donations/<donation_id>/delete', methods=['POST'])
+def donations_delete(donation_id):
+    """Delete ONE Donation Log"""
+    donations.delete_one({'_id': ObjectId(donation_id)})
+    return redirect(url_for('donations_index'))
 
 #---------------- UPDATE-----------
 if __name__ == '__main__':
